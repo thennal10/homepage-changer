@@ -1,0 +1,31 @@
+{
+
+  "manifest_version": 2,
+  "name": "Homepage Changer",
+  "version": "1.1",
+
+  "description": "Changes the new tab page to the weekly top-rated images in whatever subreddit you desire",
+  "homepage_url": "https://github.com/thennal10/homepage-changer",
+  "icons": {
+    "48": "icons/sleepy_jill48.png"
+  },
+
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  
+  "browser_action": {
+    "default_icon": "icons/anna.png",
+    "default_title": "Premed sends his regards.",
+    "default_popup": "popup/choose_bg.html"
+  },
+
+  "web_accessible_resources": [
+    "icons/loadingv2.gif"
+  ],
+
+  "chrome_url_overrides": {
+		"newtab": "newtab.html"
+	}
+}
