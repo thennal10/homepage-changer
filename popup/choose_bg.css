@@ -18,18 +18,6 @@ html, body {
     background-color: #CFF2F2;
   }
   
-  .next {
+  .options {
     background-color: #E5F2F2;
-  }
-  
-  .back {
-    background-color: #FBFBC9;
-  }
-  
-  .back:hover {
-    background-color: #EAEA9D;
-  }
-
-  #textbox {
-    width: 90%
   }

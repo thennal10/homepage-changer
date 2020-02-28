@@ -8,78 +8,90 @@ const r = new snoowrap({
     refreshToken: '30464057-4axSFYGufmJ36I3vz1vxVxa399s'
 });
 
-//set the bg
-function set_bg(num, current_nm, input, cover) {
-  console.log(num)
-  console.log(input)
-  console.log(cover)
+//jquery let's go
+$(document).ready(function() {
 
-  if (cover) {
-    document.getElementsByTagName('img')[0].src = "";
-    document.getElementById('bgdiv').classList.remove("fade-bg")
-    //compare the two numbers given, and if they differ, change the background
-    if (num != current_nm) {
-      document.getElementById('bgdiv').style.backgroundImage = "url('icons/loadingv2.gif')";
-      document.getElementById('bgdiv').classList.remove("cover")
-      r.getSubreddit(input).getTop({time: "week"}).then(sumbission_list => {
-          var submission_url = sumbission_list[num].url
-          localStorage.setItem('current_bg', submission_url)
-          document.getElementById('bgdiv').style.backgroundImage = "url('"+submission_url+"')";
-          document.getElementById('bgdiv').classList.add("cover")
-        });
-    } else {
-      //load old background
-      var bg_url = localStorage.getItem("current_bg")
-      document.getElementById('bgdiv').style.backgroundImage = "url('"+bg_url+"')";
-      document.getElementById('bgdiv').classList.add("cover")
+  //just takes image url from memory and displays it
+  function display(image) {
+    $("#main").attr("src", image)
+    $("#bg").css("background-image", "url('" + image + "')")
+  }
+
+  //standard image, keyword should be a bool that states whether you want to update the bg or just load from memory (faster)
+  function standard(update) {
+    $("#main").attr("src", "icons/loadingv2.gif")
+    if (update) {
+      //uses snoowrap shit to get the submission url and update the bg, plus store it in memory for later use
+      var i = localStorage.getItem("currentIndex")
+      var subreddit = localStorage.getItem("subreddit")
+      var timespan = $("input[name=timespan]:checked").attr("id")
+      r.getSubreddit(subreddit).getTop({time: timespan}).then(sumbission_list => {
+        var image = sumbission_list[i].url
+        localStorage.setItem("currentImg", image)
+        display(image)
+      });
     }
-  } else {
-    document.getElementById('bgdiv').classList.add("fade-bg", "cover")
-    if (num != current_nm) {
-      document.getElementsByTagName('img')[0].src = "icons/loadingv2.gif";
-      r.getSubreddit(input).getTop({time: "week"}).then(sumbission_list => {
-          var submission_url = sumbission_list[num].url
-          localStorage.setItem('current_bg', submission_url)
-          document.getElementsByTagName('img')[0].src = submission_url;
-          document.getElementById('bgdiv').style.backgroundImage = "url('"+submission_url+"')";
-        });
-    } else {
-      //load old background
-      var bg_url = localStorage.getItem("current_bg")
-      document.getElementsByTagName('img')[0].src = bg_url;
-      document.getElementById('bgdiv').style.backgroundImage = "url('"+bg_url+"')";
+    else {
+      display(localStorage.getItem("currentImg"))
     }
   }
-}
 
-//initial setup for a new tab
-var string_current_num = localStorage.getItem("current_bg_num") || "0"
-var current_num = parseInt(string_current_num, 10)
+  //opens options menue
+  function options() {
+    $("#container").hide();
+    $("#menue").show();
 
-var default_input = localStorage.getItem("textbox_input")
-var default_cover_string = localStorage.getItem("cover")
-if (default_cover_string === "true") {
-    var default_cover = true
-} else if (default_cover_string === "false") {
-    var default_cover = false
-}
+    //for the input textbox
+    var subreddit = localStorage.getItem("subreddit");
+    $("#subreddit").val(subreddit);
 
-set_bg(current_num, current_num, default_input, default_cover);
+    //gets the currently selected timespan value
+    var timespan = $("input[name=timespan]:checked").attr("id")
 
-//listen for commands from popup
-browser.runtime.onMessage.addListener((message) => {
-  if (!document.hidden) {
-    var string_current_num = localStorage.getItem("current_bg_num") || "0"
-    var current_num = parseInt(string_current_num, 10)
-    
-    if (message.command === "next") {
-      localStorage.setItem('current_bg_num', `${current_num + 1}`)
-      set_bg(current_num + 1, current_num, message.input, message.cover)
-    } else if (message.command === "back") {
-      localStorage.setItem('current_bg_num', `${current_num - 1}`)
-      set_bg(current_num - 1, current_num, message.input, message.cover)
-    } else if (message.command === "cover") {
-      set_bg(current_num, current_num, message.input, message.cover)
+    //snoowrap woop woop
+    r.getSubreddit(subreddit).getTop({time: timespan}).then(sumbission_list => {
+      $(".option").each(function(index) {
+        $(this).attr("src", sumbission_list[index].url);
+      });
+    });
+  };
+
+  standard(false);
+
+  /* - clicks and pesses - */
+
+  $("#subreddit").keyup(function (event) {
+    //enter button being pressed
+    if(event.which == 13) {
+      var subreddit = $("#subreddit").val();
+      localStorage.setItem("subreddit", subreddit);
+      //just kills all the images
+      $(".option").attr("src", "");
+      options();
     }
-  }
+  })
+
+  //when an image option is clicked
+  $(".option").click(function () {
+    $("#container").show();
+    $("#menue").hide();
+    localStorage.setItem("currentIndex", $(this).index());
+    standard(true);
+  })
+
+  $('input[name=timespan]').change(function() {
+    $(".option").attr("src", "");
+    options();
+  })
+
+  //listen for commands from popup
+  browser.runtime.onMessage.addListener((message) => {
+    if (!document.hidden) {
+      if (message.command === "options") {
+        options();
+      } else if (message.command === "cover") {
+        console.log("cover")
+      }
+    }
+  })
 });

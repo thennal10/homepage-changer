@@ -1,30 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 body, html {
+    font-family: roboto;
     height: 100%;
     margin: 0;
   }
 
-.cover {
-    background-size: cover;
-}
-
-.fade-bg {
-    filter: blur(10px);
-    filter: brightness(0.5);
-}
-
-container {
-    width: 80%;
-    height: 80%;
-    position: absolute;    
-    margin:auto;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    background-color: #aaa;
-    }
-
-img {
+#main {
     max-width: 100%;
     max-height: 100%;  
     position: absolute;
@@ -37,12 +19,122 @@ img {
     filter: drop-shadow(0px 0px 10px);
 }
 
-#bgdiv {
+.button {
+    padding: 4px;
+    text-align: left;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+  
+  .button:hover {
+    background-color: #CFF2F2;
+}
+
+
+
+#bg {
     height: 100%;
     width: 100%;
     position: fixed;
-    z-index: auto;
+    z-index: -1;
+    background: rgb(68, 68, 68);
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
+    background-size: cover;
+    filter: blur(10px) brightness(0.7);
+    transform: scale(1.1);
 }
+
+#menue {
+    padding-left: 10%;
+    width: 80%;
+    position: absolute;
+    z-index: 2;
+    display: none;
+    background-color: transparent;
+}
+
+#inputwrapper {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+#subreddit {
+    text-align: center;
+    height: 70px;
+    width: 400px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    padding: 12px 20px 12px 20px;
+}
+
+#options {
+    /* Prevent vertical gaps */
+    line-height: 0;
+        
+    -webkit-column-count: 3;
+    -webkit-column-gap:   0px;
+    -moz-column-count:    3;
+    -moz-column-gap:      0px;
+    column-count:         3;
+    column-gap:           0px;  
+}
+  
+#options img {
+/* Just in case there are inline attributes */
+width: 100% !important;
+height: auto !important;
+}
+
+
+input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+}
+  
+label {
+    color: white;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px 25px;
+    border-radius: 100px;
+}
+  
+input[type=radio]:checked + label{
+    color: black;
+    background: white;
+}
+
+.radio-group {
+    display: block;
+    font-size: 30px;
+    margin: 20px;
+    overflow: hidden;
+}
+
+label,
+label::before {
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+
+/*
+label + input[type=radio] + label {
+    border-left: solid 3px #332f35;
+}
+.radio-group {
+    border: solid 3px #332f35;
+    display: inline-block;
+    margin: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+*/
