@@ -38,7 +38,7 @@ $(document).ready(function() {
   }
 
   //opens options menue
-  function options() {
+  function options(num = 0) {
     $("#container").hide();
     $("#menue").show();
 
@@ -49,11 +49,18 @@ $(document).ready(function() {
     //gets the currently selected timespan value
     var timespan = $("input[name=timespan]:checked").attr("id")
 
-    //snoowrap woop woop
+    //snoowrap woo woo
     r.getSubreddit(subreddit).getTop({time: timespan}).then(sumbission_list => {
-      $(".option").each(function(index) {
-        $(this).attr("src", sumbission_list[index].url);
-      });
+      //generates 25 new <img> tags with appropriate src
+      for (var i = num; i < 25; i++) {
+        try {
+          $("#options").append("<img class='option' src=" + sumbission_list[i].url +">")
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      //just applies the click event to all the newly generated <img>
+      $(".option").click(clickOption)
     });
   };
 
@@ -61,29 +68,36 @@ $(document).ready(function() {
 
   /* - clicks and pesses - */
 
+  //key press
   $("#subreddit").keyup(function (event) {
     //enter button being pressed
     if(event.which == 13) {
       var subreddit = $("#subreddit").val();
       localStorage.setItem("subreddit", subreddit);
       //just kills all the images
-      $(".option").attr("src", "");
+      $("#options").empty();
       options();
     }
   })
 
   //when an image option is clicked
-  $(".option").click(function () {
+  function clickOption() {
     $("#container").show();
     $("#menue").hide();
     localStorage.setItem("currentIndex", $(this).index());
     standard(true);
-  })
+  }
 
-  $('input[name=timespan]').change(function() {
-    $(".option").attr("src", "");
+  //timespan change
+  $("input[name=timespan]").change(function() {
+    $("#options").empty();
     options();
   })
+
+  //attach the more button to options to generate more options
+  $("#more").click(options)
+
+  /* --- */
 
   //listen for commands from popup
   browser.runtime.onMessage.addListener((message) => {

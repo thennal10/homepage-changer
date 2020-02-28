@@ -74,6 +74,9 @@ body, html {
 }
 
 #options {
+    border-radius: 10px;
+    background-color: rgb(68, 68, 68, 0.4);
+
     /* Prevent vertical gaps */
     line-height: 0;
         
@@ -125,6 +128,42 @@ label::before {
   -o-transition: .25s all ease;
   transition: .25s all ease;
 }
+
+/* Buttons styles start */
+#button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+button {
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    padding: 1rem 2rem;
+    margin: 70px 0px 70px 0px;
+    background: #0069ed;
+    color: #ffffff;
+    font-family: roboto;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 100ms ease-in-out, transform 150ms ease;
+}
+
+button::-moz-focus-inner {
+    border: 0;
+}
+
+button:hover{
+    background: #0053ba;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+/* Button styles end */
 
 /*
 label + input[type=radio] + label {
