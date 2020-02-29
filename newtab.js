@@ -1,3 +1,5 @@
+/* THIS IS THE SOURCE CODE, THE ACTUAL BUNDLED VERSION THAT THE EXTENSION USES IS bundle.js */
+
 //snoowrap setup
 var snoowrap = require('snoowrap');
 
@@ -17,9 +19,25 @@ $(document).ready(function() {
     $("#bg").css("background-image", "url('" + image + "')")
   }
 
+  //sets cover status
+  function cover(cov) {
+    if (cov & $("#container").is(":visible")) {
+      $("#bg").addClass("cover")
+    } else {
+      $("#bg").removeClass("cover")
+    }
+  }
+
   //standard image, keyword should be a bool that states whether you want to update the bg or just load from memory (faster)
   function standard(update) {
+
+    //set a loading image
     $("#main").attr("src", "icons/loadingv2.gif")
+
+    //just check if cover is ticked
+    var is_cover = localStorage.getItem("cover")
+    cover(JSON.parse(is_cover))
+    
     if (update) {
       //uses snoowrap shit to get the submission url and update the bg, plus store it in memory for later use
       var i = localStorage.getItem("currentIndex")
@@ -38,6 +56,7 @@ $(document).ready(function() {
 
   //opens options menue
   function options() {
+    //just to prevent any dumb errors (makes the whole thing slightly slower but eh)
     $("#container").hide();
     $("#menue").show();
 
@@ -51,7 +70,7 @@ $(document).ready(function() {
     //snoowrap woo woo
     r.getSubreddit(subreddit).getTop({time: timespan}).then(sumbission_list => {
       //generates 25 new <img> tags with appropriate src
-      for (var i = num; i < 25; i++) {
+      for (var i = 0; i < 25; i++) {
         try {
           $("#options").append("<img class='option' src=" + sumbission_list[i].url +">")
         } catch (e) {
@@ -93,18 +112,16 @@ $(document).ready(function() {
     options();
   })
 
-  //attach the more button to options to generate more options
-  $("#more").click(options)
-
   /* --- */
 
   //listen for commands from popup
   browser.runtime.onMessage.addListener((message) => {
     if (!document.hidden) {
       if (message.command === "options") {
+        $("#bg").removeClass("cover")
         options();
       } else if (message.command === "cover") {
-        console.log("cover")
+        cover(message.checked);
       }
     }
   })

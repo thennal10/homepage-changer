@@ -1,40 +1,22 @@
-//set the default value of the cover checkbox
+$(document).ready(function () {
+    //just ticks the check depending on previous state
+    var default_cover = localStorage.getItem("cover")
+    $("#cover").prop("checked", JSON.parse(default_cover))
 
-var default_cover = localStorage.getItem("cover")
-document.getElementById("cover").checked = JSON.parse(default_cover)
-
-document.addEventListener("click", (e) => {
-    var current_cover = document.getElementById('cover').checked;
-    if (current_cover === true) {
-        localStorage.setItem("cover", "true");
-    } else {
-        localStorage.setItem("cover", "false")
-    }
-
-    function options() {
+    //sends the browser a message that option has been clicked
+    $("#options").click(function () {
         browser.runtime.sendMessage({
             command: "options"
         });
-    }
+    })
 
-    function cover() {
+    //resets localstorage and sends the browser a message with new cover state
+    $("#cover").click(function() {
+        var cover_state = $("#cover").is(':checked')
+        localStorage.setItem("cover", JSON.parse(cover_state))
         browser.runtime.sendMessage({
             command: "cover",
-            cover: current_cover
+            checked: cover_state
         });
-    }
-
-    // Just log the error to the console.
-
-    function reportError(error) {
-        console.error(`Error: ${error}`);
-    }
-
-    if (e.target.classList.contains("options")) {
-        options();
-    }
-    else if (e.target.classList.contains("cover")) {
-        cover();
-    }
-
+    })
 });
