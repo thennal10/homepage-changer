@@ -1,5 +1,6 @@
-# Homepage Changer
-Browser extension that changes your homepage to weekly top-ranked posts from a subreddit of your choosing.
-Type whatever subreddit you wish (without the 'r/') and hit next. Back to go back, cover to enlarge the image as applicable to cover the entire window. Nothing else to say really.
+# Newtab Changer
+Browser extension that changes your homepage to top-rated image posts from any subreddit of your choosing
 
-Note that your virtual "position" of sort, will carry over between subreddits, e.g if you're on the 7th top weekly on r/ImaginarySliceofLife and you switch to r/art, you'll be on the 7th top weekly of r/art instead of starting from 1st.
+Click on the options to bring up the menue. Type in a subreddit (without the 'r/') and hit enter to see the results. Click on the preview options to make it your default newtab. Click on the toggle in the popup if you don't want the image container and would rather just have an enlarged image covering the whole screen.
+
+Not much else to say, really.
