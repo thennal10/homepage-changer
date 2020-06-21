@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "Homepage Changer",
-  "version": "1.1",
+  "version": "2.0",
 
   "description": "Changes the new tab page to the weekly top-rated images in whatever subreddit you desire",
   "homepage_url": "https://github.com/thennal10/homepage-changer",
