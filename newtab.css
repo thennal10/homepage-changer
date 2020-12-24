@@ -19,110 +19,20 @@ body, html {
     filter: drop-shadow(0px 0px 10px);
 }
 
-
 #bg {
     height: 100%;
     width: 100%;
     position: fixed;
-    z-index: -1;
+    top: 0;
+    left: 0;
     background: rgb(68, 68, 68);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    filter: blur(10px) brightness(0.7);
-    transform: scale(1.1);
+    /* The default blur has a white glow around the edges, so this is a custom-defined alternate svg*/
+    filter: brightness(0.7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a' x='0' y='0' width='1' height='1'%3E%3CfeGaussianBlur stdDeviation='10' result='b'/%3E%3CfeMorphology operator='dilate' radius='10'/%3E %3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='b'/%3E%3C/feMerge%3E%3C/filter%3E%3C/svg%3E#a");
+    object-fit: cover;
 }
 
 /* For when the cover input is checked */
 .cover#bg {
     z-index: 20;
     filter: none;
-    transform: none;
-}
-
-/* Menue shit */
-#menue {
-    padding-left: 10%;
-    width: 80%;
-    position: absolute;
-    z-index: 2;
-    display: none;
-    background-color: transparent;
-}
-
-/* the textbox */
-#inputwrapper {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    text-align: center;
-}
-
-#subreddit {
-    text-align: center;
-    height: 70px;
-    width: 400px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    padding: 12px 20px 12px 20px;
-}
-
-/* the timespan selector */
-input[type=radio] {
-    position: absolute;
-    visibility: hidden;
-    display: none;
-}
-  
-label {
-    color: white;
-    display: inline-block;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 10px 25px;
-    border-radius: 100px;
-}
-  
-input[type=radio]:checked + label{
-    color: black;
-    background: white;
-}
-
-.radio-group {
-    display: block;
-    font-size: 30px;
-    margin: 20px;
-    overflow: hidden;
-}
-
-label,
-label::before {
-  -webkit-transition: .25s all ease;
-  -o-transition: .25s all ease;
-  transition: .25s all ease;
-}
-
-/* the images */
-#options {
-    border-radius: 10px;
-    background-color: rgb(68, 68, 68, 0.4);
-
-    /* Prevent vertical gaps */
-    line-height: 0;
-        
-    -webkit-column-count: 3;
-    -webkit-column-gap:   0px;
-    -moz-column-count:    3;
-    -moz-column-gap:      0px;
-    column-count:         3;
-    column-gap:           0px;  
-}
-  
-#options img {
-/* Just in case there are inline attributes */
-width: 100% !important;
-height: auto !important;
 }

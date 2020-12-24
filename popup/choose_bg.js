@@ -1,19 +1,23 @@
 $(document).ready(function () {
-    //just ticks the check depending on previous state
+    // Sets default values from localstorage
     var default_cover = localStorage.getItem("cover")
-    $("#cover").prop("checked", JSON.parse(default_cover))
+    $("#cover").prop("checked", default_cover == 'true') // Because default_cover is stored as a string 
 
-    //sends the browser a message that option has been clicked
-    $("#options").click(function () {
-        browser.runtime.sendMessage({
-            command: "options"
-        });
+    var default_link = localStorage.getItem("link")
+    $("#link").val(default_link)
+
+    $('#link').keypress(function (e) {
+        if (e.which == 13) { // enter key
+            browser.runtime.sendMessage({
+                command: "setlink",
+                link: $(this).val()
+            });
+        }
     })
 
-    //resets localstorage and sends the browser a message with new cover state
+    //Sends the browser a message with new cover state
     $("#cover").click(function() {
         var cover_state = $("#cover").is(':checked')
-        localStorage.setItem("cover", JSON.parse(cover_state))
         browser.runtime.sendMessage({
             command: "cover",
             checked: cover_state
